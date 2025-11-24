@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --bg-primary: #050914;
+    --bg-surface: rgba(255, 255, 255, 0.04);
+    --text-primary: #e5e7eb;
+    --text-muted: #aeb5c6;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --accent: #6366f1;
+    --accent-2: #22c55e;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :root.theme-light {
+    --bg-primary: #eef2f9;
+    --bg-surface: #ffffff;
+    --text-primary: #0f172a;
+    --text-muted: #4b5563;
+    --border-subtle: #d7deee;
+    --accent: #4f8df5;
+    --accent-2: #22c55e;
+  }
+
+  body {
+    min-height: 100vh;
+    height: 100vh;
+    margin: 0;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+  }
+
+  #root {
+    min-height: 100vh;
+    height: 100vh;
+  }
+}
+
+@layer components {
+  .card-surface {
+    @apply rounded-2xl border bg-white/5 shadow-xl backdrop-blur;
+  }
+}
