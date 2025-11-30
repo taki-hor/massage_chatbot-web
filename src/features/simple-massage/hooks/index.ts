@@ -1,0 +1,1 @@
+export { useSimpleMassage } from "./useSimpleMassage"
