@@ -47,3 +47,101 @@
     @apply rounded-2xl border bg-white/5 shadow-xl backdrop-blur;
   }
 }
+
+/* Expression Animation Keyframes */
+@keyframes blink {
+  0%, 90%, 100% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 0;
+  }
+}
+
+@keyframes smile {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes squint {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.8);
+  }
+}
+
+@keyframes squeeze {
+  0%, 100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.9);
+  }
+}
+
+@keyframes wince {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(1px);
+  }
+  75% {
+    transform: translateY(-1px);
+  }
+}
+
+@keyframes ouch {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes drip {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(5px);
+    opacity: 0;
+  }
+}
+
+/* Utility Classes for Animations */
+.animate-blink {
+  animation: blink 3s ease-in-out infinite;
+}
+
+.animate-smile {
+  animation: smile 2s ease-in-out infinite;
+}
+
+.animate-squint {
+  animation: squint 1s ease-in-out infinite;
+}
+
+.animate-squeeze {
+  animation: squeeze 0.5s ease-in-out infinite;
+}
+
+.animate-wince {
+  animation: wince 1s ease-in-out infinite;
+}
+
+.animate-ouch {
+  animation: ouch 0.3s ease-in-out infinite;
+}
+
+.animate-drip {
+  animation: drip 1s ease-in-out infinite;
+}

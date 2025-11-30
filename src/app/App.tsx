@@ -6,7 +6,8 @@ import HomePage from "@/pages/HomePage"
 import SessionPage from "@/features/session/SessionPage"
 import TTSPage from "@/features/tts/TTSPage"
 import RobotPage from "@/features/robot/RobotPage"
-import LogsPage from "@/features/logs/LogsPage"
+import LogsPage from "@/features/session-logs/LogsPage"
+import { SimpleMassagePage } from "@/features/simple-massage"
 import { Toaster } from "@/shared/components/ui/sonner"
 import { cn } from "@/shared/lib/utils"
 import { Button } from "@/shared/components/ui/button"
@@ -75,6 +76,7 @@ export default function App() {
                   <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/session" element={<SessionPage />} />
+                    <Route path="/simple" element={<SimpleMassagePage />} />
                     <Route path="/tts" element={<TTSPage />} />
                     <Route path="/robot" element={<RobotPage />} />
                     <Route path="/logs" element={<LogsPage />} />
@@ -94,6 +96,7 @@ export default function App() {
 
 function AppHeader({ theme, onToggle }: { theme: "dark" | "light"; onToggle: () => void }) {
   const navItems = [
+    { to: "/simple", label: "簡約模式" },
     { to: "/session", label: "Session" },
     { to: "/robot", label: "Robot" },
     { to: "/tts", label: "TTS" },
