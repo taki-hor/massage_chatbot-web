@@ -1,6 +1,5 @@
 import { cn } from "@/shared/lib/utils"
 import { Button } from "@/shared/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { ExpressionDisplay } from "./components/ExpressionDisplay"
 import { ModeSelector } from "./components/ModeSelector"
 import { IntensityControl } from "./components/IntensityControl"
@@ -36,66 +35,53 @@ export function SimpleMassagePage() {
 
   return (
     <div className="h-full overflow-auto">
-      <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6">
+      <div className="max-w-3xl mx-auto p-4 md:p-8 space-y-8">
         {/* 頁面標題 */}
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-800">
-            小腿按摩控制
+        <header className="text-center space-y-1">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            小腿按摩
           </h1>
-          <p className="text-slate-500">
-            簡約設計 · 專注體驗
-          </p>
-        </div>
+          <p className="text-slate-400 text-sm">簡約 · 直覺 · 舒適</p>
+        </header>
 
-        {/* 主要內容區域 */}
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* 左側：表情和反饋 */}
-          <Card className="bg-white/80 backdrop-blur border-slate-200">
-            <CardHeader className="border-b border-slate-100">
-              <CardTitle className="text-slate-800 text-lg">感受反饋</CardTitle>
-            </CardHeader>
-            <CardContent className="pt-6 space-y-6">
-              {/* 動態表情顯示 */}
-              <ExpressionDisplay
-                expression={expression}
-                isAnimating={isRunning}
-                size="lg"
-              />
+        {/* 表情顯示 - 核心視覺區域 */}
+        <section className="flex flex-col items-center py-4">
+          <ExpressionDisplay
+            expression={expression}
+            isAnimating={isRunning}
+            size="lg"
+          />
+        </section>
 
-              {/* 反饋按鈕 */}
-              <FeedbackButtons
-                currentExpression={expression}
-                onFeedback={setExpression}
-                disabled={isIdle}
-              />
-            </CardContent>
-          </Card>
+        {/* 反饋按鈕 */}
+        <section className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 shadow-sm border border-slate-100">
+          <FeedbackButtons
+            currentExpression={expression}
+            onFeedback={setExpression}
+            disabled={isIdle}
+          />
+        </section>
 
-          {/* 右側：控制面板 */}
-          <div className="space-y-6">
-            {/* 模式選擇 */}
-            <Card className="bg-white/80 backdrop-blur border-slate-200">
-              <CardContent className="pt-6">
-                <ModeSelector
-                  selected={mode}
-                  onChange={setMode}
-                  disabled={isLoading}
-                />
-              </CardContent>
-            </Card>
-
-            {/* 力度控制 */}
-            <Card className="bg-white/80 backdrop-blur border-slate-200">
-              <CardContent className="pt-6">
-                <IntensityControl
-                  selected={intensity}
-                  onChange={setIntensity}
-                  disabled={isLoading}
-                />
-              </CardContent>
-            </Card>
+        {/* 控制區域 - 模式和力度 */}
+        <section className="grid gap-4 md:grid-cols-2">
+          {/* 模式選擇 */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-slate-100">
+            <ModeSelector
+              selected={mode}
+              onChange={setMode}
+              disabled={isLoading}
+            />
           </div>
-        </div>
+
+          {/* 力度控制 */}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 shadow-sm border border-slate-100">
+            <IntensityControl
+              selected={intensity}
+              onChange={setIntensity}
+              disabled={isLoading}
+            />
+          </div>
+        </section>
 
         {/* 狀態顯示 */}
         <StatusDisplay
@@ -106,15 +92,15 @@ export function SimpleMassagePage() {
           robotConnected={robotConnected}
         />
 
-        {/* 控制按鈕 */}
-        <div className="flex justify-center gap-4">
+        {/* 主控制按鈕 */}
+        <section className="flex justify-center gap-4 pb-4">
           {isIdle && (
             <Button
               variant="primary"
               size="lg"
               onClick={start}
               disabled={isLoading}
-              className="min-w-[160px] text-lg"
+              className="min-w-[180px] h-14 text-lg rounded-2xl shadow-xl shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all"
             >
               {isLoading ? (
                 <span className="flex items-center gap-2">
@@ -122,7 +108,7 @@ export function SimpleMassagePage() {
                   準備中...
                 </span>
               ) : (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-3">
                   <PlayIcon />
                   開始按摩
                 </span>
@@ -137,7 +123,7 @@ export function SimpleMassagePage() {
                 size="lg"
                 onClick={pause}
                 disabled={isLoading}
-                className="min-w-[120px]"
+                className="min-w-[120px] h-12 rounded-xl"
               >
                 {isPaused ? (
                   <span className="flex items-center gap-2">
@@ -157,46 +143,26 @@ export function SimpleMassagePage() {
                 size="lg"
                 onClick={stop}
                 disabled={isLoading}
-                className="min-w-[120px] border-red-300 text-red-600 hover:bg-red-50"
+                className="min-w-[120px] h-12 rounded-xl border-red-200 text-red-600 hover:bg-red-50 hover:border-red-300"
               >
                 <span className="flex items-center gap-2">
                   <StopIcon />
                   停止
                 </span>
               </Button>
+
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={reset}
+                disabled={isLoading || isRunning}
+                className="h-12 rounded-xl text-slate-400 hover:text-slate-600"
+              >
+                <ResetIcon />
+              </Button>
             </>
           )}
-
-          {!isIdle && (
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={reset}
-              disabled={isLoading || isRunning}
-              className="text-slate-500"
-            >
-              <span className="flex items-center gap-2">
-                <ResetIcon />
-                重置
-              </span>
-            </Button>
-          )}
-        </div>
-
-        {/* 小腿示意圖 */}
-        <Card className="bg-white/80 backdrop-blur border-slate-200">
-          <CardContent className="pt-6">
-            <div className="flex flex-col items-center gap-4">
-              <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
-                按摩部位
-              </h3>
-              <CalfDiagram isActive={isRunning} />
-              <p className="text-sm text-slate-500">
-                專注小腿肌肉，緩解疲勞
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        </section>
       </div>
     </div>
   )
@@ -265,135 +231,6 @@ function LoadingSpinner({ className }: { className?: string }) {
         fill="currentColor"
         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
       />
-    </svg>
-  )
-}
-
-/**
- * 小腿示意圖組件
- */
-function CalfDiagram({ isActive }: { isActive: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 120 200"
-      className={cn("w-32 h-48", isActive && "animate-pulse")}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-    >
-      <defs>
-        <linearGradient id="calfGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#FFE4C4" />
-          <stop offset="50%" stopColor="#FFDAB9" />
-          <stop offset="100%" stopColor="#FFE4C4" />
-        </linearGradient>
-        <linearGradient id="activeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#93C5FD" />
-          <stop offset="50%" stopColor="#60A5FA" />
-          <stop offset="100%" stopColor="#93C5FD" />
-        </linearGradient>
-      </defs>
-
-      {/* 大腿（部分） */}
-      <ellipse
-        cx="60"
-        cy="20"
-        rx="30"
-        ry="25"
-        fill="url(#calfGradient)"
-        stroke="#D4A574"
-      />
-
-      {/* 膝蓋 */}
-      <ellipse
-        cx="60"
-        cy="50"
-        rx="22"
-        ry="15"
-        fill="url(#calfGradient)"
-        stroke="#D4A574"
-      />
-
-      {/* 小腿主體 - 這是按摩區域 */}
-      <path
-        d="M 38 55
-           Q 30 90, 35 130
-           Q 38 160, 45 175
-           L 75 175
-           Q 82 160, 85 130
-           Q 90 90, 82 55
-           Z"
-        fill={isActive ? "url(#activeGradient)" : "url(#calfGradient)"}
-        stroke={isActive ? "#3B82F6" : "#D4A574"}
-        strokeWidth={isActive ? "3" : "2"}
-        className={isActive ? "animate-pulse" : ""}
-      />
-
-      {/* 小腿肌肉線條 */}
-      <path
-        d="M 50 70 Q 60 100, 55 140"
-        stroke={isActive ? "#2563EB" : "#C9A66B"}
-        strokeWidth="1"
-        fill="none"
-        opacity="0.5"
-      />
-      <path
-        d="M 70 70 Q 60 100, 65 140"
-        stroke={isActive ? "#2563EB" : "#C9A66B"}
-        strokeWidth="1"
-        fill="none"
-        opacity="0.5"
-      />
-
-      {/* 腳踝 */}
-      <ellipse
-        cx="60"
-        cy="180"
-        rx="18"
-        ry="10"
-        fill="url(#calfGradient)"
-        stroke="#D4A574"
-      />
-
-      {/* 按摩區域指示 */}
-      {isActive && (
-        <>
-          {/* 按摩波紋效果 */}
-          <circle
-            cx="60"
-            cy="100"
-            r="15"
-            fill="none"
-            stroke="#3B82F6"
-            strokeWidth="2"
-            opacity="0.6"
-            className="animate-ping"
-          />
-          <circle
-            cx="60"
-            cy="130"
-            r="12"
-            fill="none"
-            stroke="#3B82F6"
-            strokeWidth="2"
-            opacity="0.4"
-            className="animate-ping"
-            style={{ animationDelay: "0.5s" }}
-          />
-        </>
-      )}
-
-      {/* 標籤 */}
-      <text
-        x="60"
-        y="195"
-        textAnchor="middle"
-        fontSize="10"
-        fill="#6B7280"
-        fontWeight="500"
-      >
-        小腿
-      </text>
     </svg>
   )
 }

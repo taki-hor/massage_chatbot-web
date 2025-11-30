@@ -1,6 +1,6 @@
 import { cn } from "@/shared/lib/utils"
 import type { Expression } from "../types"
-import { EXPRESSION_LABELS, EXPRESSION_COLORS, EXPRESSION_BG_COLORS } from "../types"
+import { EXPRESSION_LABELS } from "../types"
 
 interface FeedbackButtonsProps {
   currentExpression: Expression
@@ -11,9 +11,29 @@ interface FeedbackButtonsProps {
 
 const EXPRESSIONS: Expression[] = ["comfortable", "normal", "slight-pain", "severe-pain"]
 
+/** 表情按鈕顏色配置 */
+const BUTTON_STYLES: Record<Expression, { active: string; ring: string }> = {
+  comfortable: {
+    active: "bg-emerald-50 border-emerald-300 text-emerald-700",
+    ring: "ring-emerald-200",
+  },
+  normal: {
+    active: "bg-blue-50 border-blue-300 text-blue-700",
+    ring: "ring-blue-200",
+  },
+  "slight-pain": {
+    active: "bg-amber-50 border-amber-300 text-amber-700",
+    ring: "ring-amber-200",
+  },
+  "severe-pain": {
+    active: "bg-red-50 border-red-300 text-red-700",
+    ring: "ring-red-200",
+  },
+}
+
 /**
  * 用戶反饋按鈕組
- * 讓用戶反饋當前的感受：舒服、一般、少痛、很痛
+ * 簡潔的橫向排列，清晰表達感受
  */
 export function FeedbackButtons({
   currentExpression,
@@ -23,105 +43,107 @@ export function FeedbackButtons({
 }: FeedbackButtonsProps) {
   return (
     <div className={cn("space-y-3", className)}>
-      <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wide text-center">
+      <h3 className="text-xs font-semibold text-slate-400 uppercase tracking-widest text-center">
         您的感受
       </h3>
-      <div className="flex justify-center gap-2">
-        {EXPRESSIONS.map((expression) => (
-          <button
-            key={expression}
-            onClick={() => onFeedback(expression)}
-            disabled={disabled}
-            className={cn(
-              "flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all duration-200",
-              "hover:scale-105 active:scale-95",
-              "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100",
-              currentExpression === expression
-                ? cn(EXPRESSION_BG_COLORS[expression], "shadow-md")
-                : "border-slate-200 bg-white hover:border-slate-300"
-            )}
-          >
-            <FeedbackIcon expression={expression} isActive={currentExpression === expression} />
-            <span
+      <div className="flex justify-center gap-2 sm:gap-3">
+        {EXPRESSIONS.map((expression) => {
+          const isActive = currentExpression === expression
+          const styles = BUTTON_STYLES[expression]
+
+          return (
+            <button
+              key={expression}
+              onClick={() => onFeedback(expression)}
+              disabled={disabled}
               className={cn(
-                "text-xs font-medium",
-                currentExpression === expression
-                  ? EXPRESSION_COLORS[expression]
-                  : "text-slate-500"
+                "flex flex-col items-center gap-2 px-3 py-3 sm:px-4 rounded-xl border-2 transition-all duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-offset-1",
+                styles.ring,
+                "hover:scale-105 active:scale-95",
+                "disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100",
+                isActive
+                  ? cn(styles.active, "shadow-md")
+                  : "border-slate-200 bg-white/80 text-slate-600 hover:border-slate-300 hover:bg-white"
               )}
             >
-              {EXPRESSION_LABELS[expression]}
-            </span>
-          </button>
-        ))}
+              <FeedbackFace expression={expression} isActive={isActive} />
+              <span className="text-xs font-semibold whitespace-nowrap">
+                {EXPRESSION_LABELS[expression]}
+              </span>
+            </button>
+          )
+        })}
       </div>
-      <p className="text-xs text-slate-400 text-center">
-        點擊反饋您的感受，系統將自動調整
-      </p>
     </div>
   )
 }
 
-interface FeedbackIconProps {
+interface FeedbackFaceProps {
   expression: Expression
   isActive: boolean
 }
 
-/**
- * 反饋按鈕圖標 - 使用簡化的臉部符號
- */
-function FeedbackIcon({ expression, isActive }: FeedbackIconProps) {
-  const size = "w-8 h-8"
-  const color = isActive ? EXPRESSION_COLORS[expression] : "text-slate-400"
+/** 簡約風格的表情圖標 */
+function FeedbackFace({ expression, isActive }: FeedbackFaceProps) {
+  const faceColor = isActive ? "currentColor" : "#94A3B8"
 
-  switch (expression) {
-    case "comfortable":
-      return (
-        <svg viewBox="0 0 24 24" className={cn(size, color)} fill="currentColor">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
-          {/* 閉眼微笑 */}
-          <path d="M7 10 Q8.5 8, 10 10" stroke="currentColor" strokeWidth="1.5" fill="none" />
-          <path d="M14 10 Q15.5 8, 17 10" stroke="currentColor" strokeWidth="1.5" fill="none" />
-          <path d="M8 14 Q12 18, 16 14" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        </svg>
-      )
+  return (
+    <svg viewBox="0 0 32 32" className="w-8 h-8 sm:w-10 sm:h-10">
+      {/* 臉部圓圈 */}
+      <circle
+        cx="16"
+        cy="16"
+        r="14"
+        fill="none"
+        stroke={faceColor}
+        strokeWidth="2"
+      />
 
-    case "normal":
-      return (
-        <svg viewBox="0 0 24 24" className={cn(size, color)} fill="currentColor">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
-          {/* 正常眼睛和嘴巴 */}
-          <circle cx="8.5" cy="10" r="1.5" fill="currentColor" />
-          <circle cx="15.5" cy="10" r="1.5" fill="currentColor" />
-          <line x1="8" y1="15" x2="16" y2="15" stroke="currentColor" strokeWidth="1.5" />
-        </svg>
-      )
+      {expression === "comfortable" && (
+        <>
+          {/* 彎彎眼 */}
+          <path d="M 8 13 Q 11 9, 14 13" stroke={faceColor} strokeWidth="2" fill="none" strokeLinecap="round" />
+          <path d="M 18 13 Q 21 9, 24 13" stroke={faceColor} strokeWidth="2" fill="none" strokeLinecap="round" />
+          {/* 大笑嘴 */}
+          <path d="M 9 19 Q 16 27, 23 19" stroke={faceColor} strokeWidth="2" fill="none" strokeLinecap="round" />
+        </>
+      )}
 
-    case "slight-pain":
-      return (
-        <svg viewBox="0 0 24 24" className={cn(size, color)} fill="currentColor">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
-          {/* 皺眉 */}
-          <path d="M6 8 L10 9" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M18 8 L14 9" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="8.5" cy="11" r="1.2" fill="currentColor" />
-          <circle cx="15.5" cy="11" r="1.2" fill="currentColor" />
-          <path d="M9 16 Q12 14, 15 16" stroke="currentColor" strokeWidth="1.5" fill="none" />
-        </svg>
-      )
+      {expression === "normal" && (
+        <>
+          {/* 圓眼睛 */}
+          <circle cx="11" cy="13" r="2" fill={faceColor} />
+          <circle cx="21" cy="13" r="2" fill={faceColor} />
+          {/* 微笑 */}
+          <path d="M 11 21 Q 16 24, 21 21" stroke={faceColor} strokeWidth="2" fill="none" strokeLinecap="round" />
+        </>
+      )}
 
-    case "severe-pain":
-      return (
-        <svg viewBox="0 0 24 24" className={cn(size, color)} fill="currentColor">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
+      {expression === "slight-pain" && (
+        <>
+          {/* 皺眉線 */}
+          <path d="M 7 10 L 14 12" stroke={faceColor} strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M 25 10 L 18 12" stroke={faceColor} strokeWidth="1.5" strokeLinecap="round" />
+          {/* 小眼睛 */}
+          <circle cx="11" cy="14" r="1.5" fill={faceColor} />
+          <circle cx="21" cy="14" r="1.5" fill={faceColor} />
+          {/* 扁嘴 */}
+          <path d="M 11 22 Q 16 19, 21 22" stroke={faceColor} strokeWidth="2" fill="none" strokeLinecap="round" />
+        </>
+      )}
+
+      {expression === "severe-pain" && (
+        <>
           {/* X眼睛 */}
-          <path d="M6 8 L10 12 M6 12 L10 8" stroke="currentColor" strokeWidth="1.5" />
-          <path d="M14 8 L18 12 M14 12 L18 8" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M 8 10 L 14 16 M 8 16 L 14 10" stroke={faceColor} strokeWidth="2" strokeLinecap="round" />
+          <path d="M 18 10 L 24 16 M 18 16 L 24 10" stroke={faceColor} strokeWidth="2" strokeLinecap="round" />
           {/* 張嘴 */}
-          <ellipse cx="12" cy="16" rx="3" ry="2" fill="currentColor" />
-        </svg>
-      )
-  }
+          <ellipse cx="16" cy="23" rx="4" ry="3" fill={faceColor} />
+        </>
+      )}
+    </svg>
+  )
 }
 
 export default FeedbackButtons
