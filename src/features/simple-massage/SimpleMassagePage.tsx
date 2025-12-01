@@ -1,10 +1,10 @@
-import { cn } from "@/shared/lib/utils"
 import { Button } from "@/shared/components/ui/button"
 import { ExpressionDisplay } from "./components/ExpressionDisplay"
 import { ModeSelector } from "./components/ModeSelector"
 import { IntensityControl } from "./components/IntensityControl"
 import { FeedbackButtons } from "./components/FeedbackButtons"
 import { StatusDisplay } from "./components/StatusDisplay"
+import { PlayIcon, PauseIcon, StopIcon, ResetIcon, LoadingSpinner } from "./components/Icons"
 import { useSimpleMassage } from "./hooks/useSimpleMassage"
 
 /**
@@ -165,73 +165,6 @@ export function SimpleMassagePage() {
         </section>
       </div>
     </div>
-  )
-}
-
-// 圖標組件
-function PlayIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={cn("w-5 h-5", className)}>
-      <polygon points="5 3 19 12 5 21 5 3" />
-    </svg>
-  )
-}
-
-function PauseIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={cn("w-5 h-5", className)}>
-      <rect x="6" y="4" width="4" height="16" />
-      <rect x="14" y="4" width="4" height="16" />
-    </svg>
-  )
-}
-
-function StopIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={cn("w-5 h-5", className)}>
-      <rect x="4" y="4" width="16" height="16" rx="2" />
-    </svg>
-  )
-}
-
-function ResetIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn("w-5 h-5", className)}
-    >
-      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-      <path d="M3 3v5h5" />
-    </svg>
-  )
-}
-
-function LoadingSpinner({ className }: { className?: string }) {
-  return (
-    <svg
-      className={cn("w-5 h-5 animate-spin", className)}
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        className="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      />
-    </svg>
   )
 }
 
